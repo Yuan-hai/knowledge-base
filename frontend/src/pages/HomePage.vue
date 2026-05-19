@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import AppHeader from '../components/layout/AppHeader.vue'
 import AppSidebar from '../components/layout/AppSidebar.vue'
 import ChatPanel from '../components/chat/ChatPanel.vue'
@@ -10,6 +11,8 @@ import { useSettings } from '../composables/useSettings'
 import { useDocuments } from '../composables/useDocuments'
 import { useRagContext } from '../composables/useRagContext'
 import { useChat } from '../composables/useChat'
+
+const { t } = useI18n()
 
 const {
   selectedModel,
@@ -69,7 +72,7 @@ async function handleSendMessage(content: string) {
   if (mode.value === 'rag') {
     const docIds = Array.from(selectedDocIds.value)
     if (docIds.length === 0) {
-      showToast('Please select at least one document for RAG mode.', 'info')
+      showToast(t('chat.needSelect'), 'info')
       return
     }
     await sendRagQuery(content, docIds, selectedModel.value)
@@ -81,7 +84,7 @@ async function handleSendMessage(content: string) {
 async function handleUpload(file: File) {
   const result = await uploadDocument(file)
   if (result) {
-    showToast(`"${result.filename}" uploaded successfully.`, 'success')
+    showToast(`"${result.filename}" ${t('messages.uploadSuccess')}`, 'success')
   }
 }
 
@@ -93,7 +96,7 @@ async function handleDelete(id: string) {
     if (selectedDocIds.value.has(id)) {
       toggleDocument(id)
     }
-    showToast('Document deleted.', 'success')
+    showToast(t('messages.docDeleted'), 'success')
   }
 }
 
@@ -103,7 +106,7 @@ async function handleSaveSettings(data: { selectedModel: string; uploadFolder: s
   const success = await updateSettings()
   if (success) {
     settingsVisible.value = false
-    showToast('Settings saved.', 'success')
+    showToast(t('messages.settingsSaved'), 'success')
   }
 }
 
@@ -143,7 +146,7 @@ onMounted(async () => {
             @update:mode="mode = $event"
           />
           <p class="text-[10px] text-stone-300">
-            {{ mode === 'rag' ? 'Query selected documents' : 'General conversation' }}
+            {{ mode === 'rag' ? $t('chat.ragMode') : $t('chat.chatMode') }}
           </p>
         </div>
 

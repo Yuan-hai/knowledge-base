@@ -68,7 +68,7 @@ function handleSave() {
         >
           <div class="flex flex-col h-full">
             <div class="flex items-center justify-between border-b border-stone-100 px-5 py-4">
-              <h2 class="text-base font-medium text-stone-800">Settings</h2>
+              <h2 class="text-base font-medium text-stone-800">{{ $t('settings.title') }}</h2>
               <button
                 class="rounded-lg p-1.5 text-stone-400 hover:bg-stone-50 hover:text-stone-600 transition-colors"
                 @click="emit('close')"
@@ -88,7 +88,7 @@ function handleSave() {
 
               <div class="space-y-2">
                 <label class="block text-xs font-medium tracking-wide uppercase text-stone-400">
-                  Upload Folder
+                  {{ $t('settings.uploadFolder') }}
                 </label>
                 <input
                   v-model="localFolder"
@@ -97,7 +97,7 @@ function handleSave() {
                   class="w-full rounded-lg border border-stone-200 bg-white px-3 py-2.5 text-sm text-stone-700 shadow-sm transition-colors placeholder:text-stone-300 focus:border-stone-400 focus:outline-none focus:ring-1 focus:ring-stone-400"
                 />
                 <p class="text-xs text-stone-400">
-                  Absolute path to the folder for document uploads.
+                  {{ $t('settings.uploadFolderDesc') }}
                 </p>
               </div>
             </div>
@@ -109,7 +109,7 @@ function handleSave() {
                 @click="handleSave"
               >
                 <LoadingSpinner v-if="saving" size="sm" />
-                <span>{{ saving ? 'Saving...' : 'Save Settings' }}</span>
+                <span>{{ saving ? $t('settings.saving') : $t('settings.save') }}</span>
               </button>
             </div>
           </div>

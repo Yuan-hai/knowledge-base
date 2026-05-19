@@ -60,11 +60,10 @@ onMounted(scrollToBottom)
             />
           </svg>
           <h3 class="mt-4 text-base font-medium text-stone-500">
-            Knowledge Base Assistant
+            {{ $t('chat.assistant') }}
           </h3>
           <p class="mt-2 text-sm text-stone-400 leading-relaxed">
-            Ask questions about your documents. Switch to <strong>RAG</strong> mode
-            to query specific files, or use <strong>Chat</strong> mode for general conversation.
+            {{ $t('chat.prompt') }}
           </p>
         </div>
       </div>

@@ -1,8 +1,10 @@
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import api from '../api'
 import type { SettingsResponse, ModelInfo } from '../types'
 
 export function useSettings() {
+  const { t } = useI18n()
   const selectedModel = ref<string>('')
   const uploadFolder = ref<string>('')
   const availableModels = ref<ModelInfo[]>([])
@@ -19,7 +21,7 @@ export function useSettings() {
       uploadFolder.value = data.upload_folder
       availableModels.value = data.available_models
     } catch (e: any) {
-      error.value = e?.response?.data?.detail || e.message || 'Failed to load settings'
+      error.value = e?.response?.data?.detail || e.message || t('messages.loadSettingsFailed')
     } finally {
       loading.value = false
     }
@@ -38,7 +40,7 @@ export function useSettings() {
       availableModels.value = data.available_models
       return true
     } catch (e: any) {
-      error.value = e?.response?.data?.detail || e.message || 'Failed to save settings'
+      error.value = e?.response?.data?.detail || e.message || t('messages.saveSettingsFailed')
       return false
     } finally {
       saving.value = false

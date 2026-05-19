@@ -1,8 +1,10 @@
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import api from '../api'
 import type { DocumentInfo } from '../types'
 
 export function useDocuments() {
+  const { t } = useI18n()
   const documents = ref<DocumentInfo[]>([])
   const loading = ref(false)
   const uploading = ref(false)
@@ -16,7 +18,7 @@ export function useDocuments() {
       const { data } = await api.get<DocumentInfo[]>('/documents')
       documents.value = data
     } catch (e: any) {
-      error.value = e?.response?.data?.detail || e.message || 'Failed to load documents'
+      error.value = e?.response?.data?.detail || e.message || t('messages.loadDocsFailed')
     } finally {
       loading.value = false
     }
@@ -40,7 +42,7 @@ export function useDocuments() {
       documents.value.push(data)
       return data
     } catch (e: any) {
-      error.value = e?.response?.data?.detail || e.message || 'Upload failed'
+      error.value = e?.response?.data?.detail || e.message || t('messages.uploadFailed')
       return null
     } finally {
       uploading.value = false
@@ -55,7 +57,7 @@ export function useDocuments() {
       documents.value = documents.value.filter((d) => d.id !== id)
       return true
     } catch (e: any) {
-      error.value = e?.response?.data?.detail || e.message || 'Delete failed'
+      error.value = e?.response?.data?.detail || e.message || t('messages.deleteFailed')
       return false
     }
   }

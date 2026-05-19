@@ -43,7 +43,7 @@ function adjustHeight() {
         ref="textareaRef"
         v-model="text"
         :disabled="disabled"
-        :placeholder="placeholder || 'Type a message...'"
+        :placeholder="placeholder || $t('chat.placeholder')"
         rows="1"
         class="max-h-40 flex-1 resize-none bg-transparent text-sm text-stone-700 placeholder-stone-300 outline-none disabled:opacity-50"
         @keydown="onKeydown"
@@ -65,7 +65,7 @@ function adjustHeight() {
       </button>
     </div>
     <p class="mt-1.5 text-[10px] text-stone-300 text-center">
-      Enter to send &middot; Shift+Enter for new line
+      {{ $t('chat.hint') }}
     </p>
   </div>
 </template>

@@ -39,7 +39,7 @@ const sourcesExpanded = ref(false)
           >
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
-          {{ sources.length }} source{{ sources.length > 1 ? 's' : '' }}
+          {{ sources.length }} {{ sources.length > 1 ? $t('chat.sources') : $t('chat.source') }}
         </button>
         <div
           v-if="sourcesExpanded"

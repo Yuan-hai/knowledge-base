@@ -1,0 +1,49 @@
+{
+  "app": { "title": "Library", "settings": "Settings" },
+  "mode": { "chat": "Chat", "rag": "RAG" },
+  "chat": {
+    "placeholder": "Type a message...",
+    "hint": "Enter to send / Shift+Enter for new line",
+    "assistant": "Knowledge Base Assistant",
+    "prompt": "Ask questions about your documents...",
+    "chatMode": "General conversation",
+    "ragMode": "Query selected documents",
+    "needSelect": "Please select at least one document for RAG mode.",
+    "source": "source",
+    "sources": "sources"
+  },
+  "documents": {
+    "title": "Documents",
+    "empty": "No documents yet",
+    "emptyHint": "Upload a PDF or DOCX to get started",
+    "uploading": "Uploading...",
+    "uploadHint": "Drop files or click to upload",
+    "uploadFormats": "PDF, DOCX, TXT, MD",
+    "deleteTitle": "Delete document",
+    "chunks": "chunks"
+  },
+  "settings": {
+    "title": "Settings",
+    "model": "AI Model",
+    "selectModel": "Select a model...",
+    "uploadFolder": "Upload Folder",
+    "uploadFolderDesc": "Absolute path to the folder for document uploads.",
+    "saving": "Saving...",
+    "save": "Save Settings"
+  },
+  "sidebar": { "folder": "Folder:" },
+  "messages": {
+    "uploadSuccess": "uploaded successfully.",
+    "docDeleted": "Document deleted.",
+    "settingsSaved": "Settings saved.",
+    "loadDocsFailed": "Failed to load documents",
+    "uploadFailed": "Upload failed",
+    "deleteFailed": "Delete failed",
+    "loadSettingsFailed": "Failed to load settings",
+    "saveSettingsFailed": "Failed to save settings",
+    "serverError": "Server error:",
+    "noResponseBody": "No response body",
+    "error": "Error:"
+  },
+  "loading": "Loading..."
+}

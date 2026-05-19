@@ -71,7 +71,7 @@ function handleFile(file: File) {
 
       <div v-if="uploading" class="flex flex-col items-center px-4 py-4">
         <LoadingSpinner size="sm" />
-        <p class="mt-2 text-xs text-stone-500">Uploading... {{ progress }}%</p>
+        <p class="mt-2 text-xs text-stone-500">{{ $t('documents.uploading') }} {{ progress }}%</p>
         <div class="mt-2 h-1 w-full overflow-hidden rounded-full bg-stone-100">
           <div
             class="h-full rounded-full bg-stone-600 transition-all duration-300"
@@ -95,9 +95,9 @@ function handleFile(file: File) {
           />
         </svg>
         <p class="mt-1 text-xs text-stone-400">
-          <span class="font-medium text-stone-500">Drop files</span> or click to upload
+          {{ $t('documents.uploadHint') }}
         </p>
-        <p class="mt-0.5 text-[10px] text-stone-300">PDF, DOCX, TXT, MD</p>
+        <p class="mt-0.5 text-[10px] text-stone-300">{{ $t('documents.uploadFormats') }}</p>
       </div>
     </div>
   </div>

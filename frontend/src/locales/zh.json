@@ -1,0 +1,49 @@
+{
+  "app": { "title": "知识库", "settings": "设置" },
+  "mode": { "chat": "聊天", "rag": "知识库问答" },
+  "chat": {
+    "placeholder": "输入消息...",
+    "hint": "回车发送 / Shift+Enter 换行",
+    "assistant": "知识库助手",
+    "prompt": "向文档提问...",
+    "chatMode": "通用对话",
+    "ragMode": "查询选中文档",
+    "needSelect": "请至少选择一个文档再进行知识库问答。",
+    "source": "来源",
+    "sources": "来源"
+  },
+  "documents": {
+    "title": "文档",
+    "empty": "暂无文档",
+    "emptyHint": "上传 PDF 或 DOCX 文件开始使用",
+    "uploading": "上传中...",
+    "uploadHint": "拖拽文件或点击上传",
+    "uploadFormats": "PDF, DOCX, TXT, MD",
+    "deleteTitle": "删除文档",
+    "chunks": "个片段"
+  },
+  "settings": {
+    "title": "设置",
+    "model": "AI 模型",
+    "selectModel": "选择模型...",
+    "uploadFolder": "上传文件夹",
+    "uploadFolderDesc": "用于文档上传的文件夹绝对路径。",
+    "saving": "保存中...",
+    "save": "保存设置"
+  },
+  "sidebar": { "folder": "文件夹:" },
+  "messages": {
+    "uploadSuccess": "上传成功。",
+    "docDeleted": "文档已删除。",
+    "settingsSaved": "设置已保存。",
+    "loadDocsFailed": "加载文档失败",
+    "uploadFailed": "上传失败",
+    "deleteFailed": "删除失败",
+    "loadSettingsFailed": "加载设置失败",
+    "saveSettingsFailed": "保存设置失败",
+    "serverError": "服务器错误:",
+    "noResponseBody": "无响应内容",
+    "error": "错误:"
+  },
+  "loading": "加载中..."
+}

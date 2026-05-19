@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
 defineProps<{
   modelName: string
 }>()
@@ -6,6 +8,12 @@ defineProps<{
 const emit = defineEmits<{
   (e: 'open-settings'): void
 }>()
+
+const { locale } = useI18n()
+
+function toggleLocale() {
+  locale.value = locale.value === 'zh' ? 'en' : 'zh'
+}
 </script>
 
 <template>
@@ -21,7 +29,7 @@ const emit = defineEmits<{
           />
         </svg>
       </div>
-      <h1 class="text-base font-semibold tracking-tight text-stone-800">Library</h1>
+      <h1 class="text-base font-semibold tracking-tight text-stone-800">{{ $t('app.title') }}</h1>
     </div>
 
     <div class="flex items-center gap-3">
@@ -34,8 +42,15 @@ const emit = defineEmits<{
       </div>
 
       <button
+        class="rounded-lg px-2 py-1 text-xs font-medium text-stone-400 hover:bg-stone-50 hover:text-stone-600 transition-colors"
+        @click="toggleLocale"
+      >
+        {{ locale === 'zh' ? 'EN' : '中' }}
+      </button>
+
+      <button
         class="rounded-lg p-1.5 text-stone-300 hover:bg-stone-50 hover:text-stone-500 transition-colors"
-        title="Settings"
+        :title="$t('app.settings')"
         @click="emit('open-settings')"
       >
         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

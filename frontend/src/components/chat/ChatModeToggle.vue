@@ -21,7 +21,7 @@ const emit = defineEmits<{
         "
         @click="emit('update:mode', 'chat')"
       >
-        Chat
+        {{ $t('mode.chat') }}
       </button>
       <button
         class="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all"
@@ -32,7 +32,7 @@ const emit = defineEmits<{
         "
         @click="emit('update:mode', 'rag')"
       >
-        RAG
+        {{ $t('mode.rag') }}
         <span
           v-if="selectedDocCount > 0"
           class="inline-flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-stone-700 px-1 text-[10px] font-semibold text-white"

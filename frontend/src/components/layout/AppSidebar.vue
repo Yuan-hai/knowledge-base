@@ -44,7 +44,7 @@ const emit = defineEmits<{
       class="border-t border-stone-50 px-3 py-2"
     >
       <p class="truncate text-[10px] text-stone-300">
-        <span class="font-medium">Folder:</span> {{ uploadFolder }}
+        <span class="font-medium">{{ $t('sidebar.folder') }}</span> {{ uploadFolder }}
       </p>
     </div>
   </aside>

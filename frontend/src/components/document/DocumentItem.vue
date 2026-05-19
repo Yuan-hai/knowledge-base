@@ -66,7 +66,7 @@ function formatDate(dateStr: string): string {
       <div class="mt-0.5 flex items-center gap-2 text-xs text-stone-400">
         <span>{{ formatDate(document.created_at) }}</span>
         <span class="text-stone-300">&middot;</span>
-        <span>{{ document.chunk_count }} chunks</span>
+        <span>{{ document.chunk_count }} {{ $t('documents.chunks') }}</span>
       </div>
     </div>
 
@@ -74,7 +74,7 @@ function formatDate(dateStr: string): string {
       class="flex-shrink-0 rounded p-1 text-stone-300 opacity-0 transition-all hover:bg-red-50 hover:text-red-500 group-hover:opacity-100"
       :class="{ 'opacity-0': deleting }"
       :disabled="deleting"
-      title="Delete document"
+      :title="$t('documents.deleteTitle')"
       @click.stop="emit('delete', document.id)"
     >
       <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

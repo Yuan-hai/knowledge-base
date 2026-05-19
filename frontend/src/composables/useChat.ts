@@ -1,7 +1,9 @@
 import { ref, reactive, nextTick, onBeforeUnmount } from 'vue'
+import { useI18n } from 'vue-i18n'
 import type { ChatMessage } from '../types'
 
 export function useChat() {
+  const { t } = useI18n()
   const messages = ref<ChatMessage[]>([])
   const streaming = ref(false)
   const currentModel = ref<string>('')
@@ -42,11 +44,11 @@ export function useChat() {
       })
 
       if (!response.ok) {
-        throw new Error(`Server error: ${response.status}`)
+        throw new Error(`${t('messages.serverError')} ${response.status}`)
       }
 
       if (!response.body) {
-        throw new Error('No response body')
+        throw new Error(t('messages.noResponseBody'))
       }
 
       const reader = response.body.getReader()
@@ -68,7 +70,7 @@ export function useChat() {
             try {
               const parsed = JSON.parse(data)
               if (parsed.error) {
-                messages.value[assistantIndex].content = `Error: ${parsed.error}`
+                messages.value[assistantIndex].content = `${t('messages.error')} ${parsed.error}`
                 break
               }
               const delta =
@@ -88,7 +90,7 @@ export function useChat() {
       }
     } catch (e: any) {
       if (e.name !== 'AbortError') {
-        messages.value[assistantIndex].content = `Error: ${e.message}`
+        messages.value[assistantIndex].content = `${t('messages.error')} ${e.message}`
       }
     } finally {
       streaming.value = false
@@ -128,11 +130,11 @@ export function useChat() {
       })
 
       if (!response.ok) {
-        throw new Error(`Server error: ${response.status}`)
+        throw new Error(`${t('messages.serverError')} ${response.status}`)
       }
 
       if (!response.body) {
-        throw new Error('No response body')
+        throw new Error(t('messages.noResponseBody'))
       }
 
       const reader = response.body.getReader()
@@ -154,7 +156,7 @@ export function useChat() {
             try {
               const parsed = JSON.parse(data)
               if (parsed.error) {
-                messages.value[assistantIndex].content = `Error: ${parsed.error}`
+                messages.value[assistantIndex].content = `${t('messages.error')} ${parsed.error}`
                 break
               }
               let delta =
@@ -184,7 +186,7 @@ export function useChat() {
       }
     } catch (e: any) {
       if (e.name !== 'AbortError') {
-        messages.value[assistantIndex].content = `Error: ${e.message}`
+        messages.value[assistantIndex].content = `${t('messages.error')} ${e.message}`
       }
     } finally {
       streaming.value = false

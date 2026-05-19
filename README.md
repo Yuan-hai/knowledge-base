@@ -67,7 +67,9 @@ macOS:    /Users/xxx/Documents/knowledge-base
 Linux:    /home/xxx/Documents/knowledge-base
 ```
 
-### 5. 启动后端
+### 5. 启动项目
+
+**后端**（先开一个终端）：
 
 ```bash
 cd backend
@@ -76,11 +78,15 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 后端运行在 `http://localhost:8000`，首次启动会自动扫描上传文件夹并索引文档。
 
-### 6. 启动前端
+**前端**（另开一个终端）：
 
 ```bash
 cd frontend
+
+# 首次运行需安装依赖
 npm install
+
+# 启动开发服务器
 npm run dev
 ```
 

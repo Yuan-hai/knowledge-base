@@ -62,6 +62,15 @@ async def upload_document(file: UploadFile = File(...)):
             shutil.copyfileobj(file.file, buffer)
         logger.info("Saved uploaded file to %s", dest_path)
 
+        # Check if this file_path is already indexed (dedup)
+        existing = list_documents()
+        existing_paths = {d.get("file_path", "") for d in existing}
+        if str(dest_path.resolve()) in existing_paths:
+            # Already indexed, return existing record
+            for d in existing:
+                if d.get("file_path") == str(dest_path.resolve()):
+                    return DocumentInfo(**d)
+
         # Process through pipeline
         result = await process_upload(str(dest_path), file.filename)
         return DocumentInfo(**result)
@@ -90,9 +99,10 @@ async def get_documents():
 
 @router.delete("/{document_id}")
 async def remove_document(document_id: str):
-    """Delete a document and all its chunks from the knowledge base."""
+    """Delete a document, its physical file, and all its chunks."""
     try:
-        delete_document(document_id)
+        upload_dir = _get_upload_dir()
+        delete_document(document_id, str(upload_dir))
         return {"status": "deleted", "document_id": document_id}
     except Exception as e:
         logger.exception("Failed to delete document '%s'", document_id)

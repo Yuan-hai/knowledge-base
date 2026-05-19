@@ -31,4 +31,8 @@ export interface SettingsResponse {
   selected_model: string
   upload_folder: string
   available_models: ModelInfo[]
+  api_key: string
+  api_base_url: string
+  api_embedding_url: string
+  embedding_model: string
 }

@@ -60,6 +60,8 @@ def add_documents(
             "document": chunk,
             "embedding": embeddings[i],
             "filename": metadata.get("filename", "unknown"),
+            "file_path": metadata.get("file_path", ""),
+            "created_at": metadata.get("created_at", ""),
         }
         data.append(entry)
     _save()
@@ -120,7 +122,42 @@ def get_unique_documents() -> list[dict]:
             doc_map[d_id] = {
                 "doc_id": d_id,
                 "filename": entry.get("filename", "unknown"),
+                "file_path": entry.get("file_path", ""),
+                "created_at": entry.get("created_at", ""),
                 "chunk_count": 0,
             }
         doc_map[d_id]["chunk_count"] += 1
     return list(doc_map.values())
+
+
+def deduplicate_documents() -> dict:
+    """Remove duplicate and orphaned entries from the vector store.
+
+    Returns cleanup statistics.
+    """
+    import os
+    data = _load()
+    before = len(data)
+
+    # Remove entries whose file_path doesn't exist on disk (orphaned chunks)
+    data = [e for e in data if not e.get("file_path") or os.path.exists(e.get("file_path", ""))]
+
+    # Group by file_path (preferred) or filename (fallback for old entries)
+    # Keep entries only for the first doc_id per group; different doc_ids for same file_path are duplicates.
+    seen_doc_ids: dict[str, str] = {}  # file_path -> first doc_id
+    cleaned = []
+    removed = 0
+    for entry in data:
+        key = entry.get("file_path") or entry.get("filename", "unknown")
+        if key not in seen_doc_ids:
+            seen_doc_ids[key] = entry["doc_id"]
+            cleaned.append(entry)
+        elif entry["doc_id"] == seen_doc_ids[key]:
+            cleaned.append(entry)  # same doc_id, keep
+        else:
+            removed += 1  # different doc_id, same file_path -> duplicate
+
+    _store = cleaned
+    _save()
+    logger.info("Deduplication: %d entries removed (%d unique docs remain)", before - len(cleaned), len(seen_doc_ids))
+    return {"removed": before - len(cleaned), "before": before, "after": len(cleaned), "unique_docs": len(seen_doc_ids)}

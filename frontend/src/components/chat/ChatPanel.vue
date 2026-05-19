@@ -35,7 +35,7 @@ onMounted(scrollToBottom)
 </script>
 
 <template>
-  <div class="flex flex-col h-full">
+  <div class="flex flex-col flex-1 min-h-0">
     <!-- Messages area -->
     <div
       ref="messagesContainer"

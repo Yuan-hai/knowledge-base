@@ -8,6 +8,10 @@ export function useSettings() {
   const selectedModel = ref<string>('')
   const uploadFolder = ref<string>('')
   const availableModels = ref<ModelInfo[]>([])
+  const apiKey = ref<string>('')
+  const apiBaseUrl = ref<string>('')
+  const apiEmbeddingUrl = ref<string>('')
+  const embeddingModel = ref<string>('')
   const loading = ref(false)
   const saving = ref(false)
   const error = ref<string | null>(null)
@@ -20,6 +24,10 @@ export function useSettings() {
       selectedModel.value = data.selected_model
       uploadFolder.value = data.upload_folder
       availableModels.value = data.available_models
+      apiKey.value = data.api_key || ''
+      apiBaseUrl.value = data.api_base_url || ''
+      apiEmbeddingUrl.value = data.api_embedding_url || ''
+      embeddingModel.value = data.embedding_model || ''
     } catch (e: any) {
       error.value = e?.response?.data?.detail || e.message || t('messages.loadSettingsFailed')
     } finally {
@@ -32,12 +40,20 @@ export function useSettings() {
     error.value = null
     try {
       const { data } = await api.put<SettingsResponse>('/settings', {
-        selected_model: selectedModel.value,
-        upload_folder: uploadFolder.value,
+        selected_model: selectedModel.value.trim(),
+        upload_folder: uploadFolder.value.trim(),
+        api_key: apiKey.value.trim(),
+        api_base_url: apiBaseUrl.value.trim(),
+        api_embedding_url: apiEmbeddingUrl.value.trim(),
+        embedding_model: embeddingModel.value.trim(),
       })
       selectedModel.value = data.selected_model
       uploadFolder.value = data.upload_folder
       availableModels.value = data.available_models
+      apiKey.value = data.api_key || ''
+      apiBaseUrl.value = data.api_base_url || ''
+      apiEmbeddingUrl.value = data.api_embedding_url || ''
+      embeddingModel.value = data.embedding_model || ''
       return true
     } catch (e: any) {
       error.value = e?.response?.data?.detail || e.message || t('messages.saveSettingsFailed')
@@ -51,6 +67,10 @@ export function useSettings() {
     selectedModel,
     uploadFolder,
     availableModels,
+    apiKey,
+    apiBaseUrl,
+    apiEmbeddingUrl,
+    embeddingModel,
     loading,
     saving,
     error,

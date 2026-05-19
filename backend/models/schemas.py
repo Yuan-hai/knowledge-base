@@ -1,7 +1,6 @@
 """Pydantic models for Library API request/response validation."""
 
 from typing import List, Optional
-from datetime import datetime
 from pydantic import BaseModel, Field
 
 
@@ -29,17 +28,26 @@ class RagQueryRequest(BaseModel):
     top_k: int = Field(default=5, ge=1, le=20)
 
 
-class SettingsUpdate(BaseModel):
-    selected_model: Optional[str] = None
-    upload_folder: Optional[str] = None
-
-
 class ModelInfo(BaseModel):
     id: str
     name: str
 
 
+class SettingsUpdate(BaseModel):
+    selected_model: Optional[str] = None
+    upload_folder: Optional[str] = None
+    api_key: Optional[str] = None
+    api_base_url: Optional[str] = None
+    api_embedding_url: Optional[str] = None
+    embedding_model: Optional[str] = None
+    models: Optional[List[ModelInfo]] = None
+
+
 class SettingsResponse(BaseModel):
     selected_model: str
     upload_folder: str
+    api_key: str
+    api_base_url: str
+    api_embedding_url: str
+    embedding_model: str
     available_models: List[ModelInfo]

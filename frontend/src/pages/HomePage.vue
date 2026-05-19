@@ -18,6 +18,10 @@ const {
   selectedModel,
   uploadFolder,
   availableModels,
+  apiKey,
+  apiBaseUrl,
+  apiEmbeddingUrl,
+  embeddingModel,
   saving: settingsSaving,
   fetchSettings,
   updateSettings,
@@ -100,9 +104,20 @@ async function handleDelete(id: string) {
   }
 }
 
-async function handleSaveSettings(data: { selectedModel: string; uploadFolder: string }) {
+async function handleSaveSettings(data: {
+  selectedModel: string
+  uploadFolder: string
+  apiKey: string
+  apiBaseUrl: string
+  apiEmbeddingUrl: string
+  embeddingModel: string
+}) {
   selectedModel.value = data.selectedModel
   uploadFolder.value = data.uploadFolder
+  apiKey.value = data.apiKey
+  apiBaseUrl.value = data.apiBaseUrl
+  apiEmbeddingUrl.value = data.apiEmbeddingUrl
+  embeddingModel.value = data.embeddingModel
   const success = await updateSettings()
   if (success) {
     settingsVisible.value = false
@@ -165,6 +180,10 @@ onMounted(async () => {
       :upload-folder="uploadFolder"
       :available-models="availableModels"
       :saving="settingsSaving"
+      :api-key="apiKey"
+      :api-base-url="apiBaseUrl"
+      :api-embedding-url="apiEmbeddingUrl"
+      :embedding-model="embeddingModel"
       @close="settingsVisible = false"
       @save="handleSaveSettings"
     />

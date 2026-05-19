@@ -16,12 +16,15 @@ const emit = defineEmits<{
     <label class="block text-xs font-medium tracking-wide uppercase text-stone-400">
       {{ $t('settings.model') }}
     </label>
-    <select
+    <input
+      type="text"
+      list="model-list"
       :value="modelValue"
-      @change="emit('update:modelValue', ($event.target as HTMLSelectElement).value)"
+      :placeholder="$t('settings.selectModel')"
+      @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
       class="w-full rounded-lg border border-stone-200 bg-white px-3 py-2.5 text-sm text-stone-700 shadow-sm transition-colors focus:border-stone-400 focus:outline-none focus:ring-1 focus:ring-stone-400"
-    >
-      <option value="" disabled>{{ $t('settings.selectModel') }}</option>
+    />
+    <datalist id="model-list">
       <option
         v-for="model in models"
         :key="model.id"
@@ -29,6 +32,6 @@ const emit = defineEmits<{
       >
         {{ model.name }}
       </option>
-    </select>
+    </datalist>
   </div>
 </template>

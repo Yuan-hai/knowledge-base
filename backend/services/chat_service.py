@@ -6,7 +6,7 @@ import logging
 from typing import AsyncGenerator
 
 import httpx
-from config import DASHSCOPE_API_KEY, DASHSCOPE_CHAT_URL
+from config import DASHSCOPE_API_KEY, DASHSCOPE_CHAT_URL, load_settings
 
 logger = logging.getLogger(__name__)
 
@@ -25,13 +25,18 @@ async def stream_chat(messages: list[dict], model: str = "qwen-plus") -> AsyncGe
         Text content chunks extracted from the streaming response.
         On error, yields an error message string.
     """
-    if not DASHSCOPE_API_KEY:
-        yield f"data: {json.dumps({'error': 'DASHSCOPE_API_KEY is not configured'})}\n\n"
+    # Load settings for api_key and api_base_url; fallback to env vars
+    settings = load_settings()
+    api_key = (settings.get("api_key") or "").strip() or DASHSCOPE_API_KEY
+    api_base_url = (settings.get("api_base_url") or "").strip() or DASHSCOPE_CHAT_URL
+
+    if not api_key:
+        yield f"data: {json.dumps({'error': 'API key is not configured. Set it in settings or the DASHSCOPE_API_KEY environment variable.'})}\n\n"
         yield "data: [DONE]\n\n"
         return
 
     headers = {
-        "Authorization": f"Bearer {DASHSCOPE_API_KEY}",
+        "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
     }
 
@@ -46,7 +51,7 @@ async def stream_chat(messages: list[dict], model: str = "qwen-plus") -> AsyncGe
     try:
         async with httpx.AsyncClient(timeout=httpx.Timeout(120.0)) as client:
             async with client.stream(
-                "POST", DASHSCOPE_CHAT_URL, json=payload, headers=headers
+                "POST", api_base_url, json=payload, headers=headers
             ) as response:
                 if response.status_code != 200:
                     error_body = ""

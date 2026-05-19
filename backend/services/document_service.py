@@ -4,6 +4,7 @@ from __future__ import annotations
 import uuid
 import logging
 from datetime import datetime, timezone
+from pathlib import Path
 
 from utils.document_parser import parse_document
 from utils.text_chunker import chunk_text
@@ -65,6 +66,7 @@ async def process_upload(file_path: str, filename: str) -> dict:
         "filename": filename,
         "doc_id": doc_id,
         "created_at": now,
+        "file_path": file_path,
     }
     try:
         add_documents(doc_id, chunks, embeddings, metadata)
@@ -92,17 +94,56 @@ def list_documents() -> list[dict]:
         {
             "id": d["doc_id"],
             "filename": d["filename"],
+            "created_at": d.get("created_at", ""),
             "chunk_count": d["chunk_count"],
+            "file_path": d.get("file_path", ""),
         }
         for d in docs
     ]
 
 
-def delete_document(doc_id: str) -> None:
-    """Delete a document and all its chunks from the vector store.
+def delete_document(doc_id: str, upload_folder: str = "") -> None:
+    """Delete a document, its physical file, and all its chunks.
+
+    Retrieves the filename and file_path from the vector store, deletes the
+    physical file from disk (if found), then removes the vector store entries.
 
     Args:
         doc_id: The document identifier to remove.
+        upload_folder: Path to the upload directory for filename-based lookup.
     """
+    # Retrieve document info (filename, file_path) before deleting from vector store
+    docs = get_unique_documents()
+    filename = None
+    file_path = None
+    for d in docs:
+        if d.get("doc_id") == doc_id:
+            filename = d.get("filename")
+            file_path = d.get("file_path")
+            break
+
+    # Try to delete the physical file
+    deleted_physical = False
+    # 1) Use the stored file_path if available and the file exists
+    if file_path:
+        fp = Path(file_path)
+        if fp.exists():
+            fp.unlink()
+            deleted_physical = True
+            logger.info("Deleted physical file via stored path: %s", file_path)
+
+    # 2) Fallback: search upload_folder by filename
+    if not deleted_physical and filename and upload_folder:
+        candidate = Path(upload_folder) / filename
+        if candidate.exists():
+            candidate.unlink()
+            deleted_physical = True
+            logger.info("Deleted physical file via upload folder: %s", candidate)
+
+    if not deleted_physical and filename:
+        logger.warning("Could not find physical file for document '%s' (filename=%s, file_path=%s)",
+                       doc_id, filename, file_path)
+
+    # Delete from vector store
     vs_delete(doc_id)
-    logger.info("Document '%s' deleted", doc_id)
+    logger.info("Document '%s' deleted from vector store", doc_id)

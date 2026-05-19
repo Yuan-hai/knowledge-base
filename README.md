@@ -2,6 +2,8 @@
 
 基于 RAG 的本地知识库应用，支持文档上传、向量检索和 AI 问答。
 
+![主界面](docs/screenshot.png)
+
 ## 功能
 
 - **文档管理**：上传 PDF / DOCX，自动分块 + embedding 入库
